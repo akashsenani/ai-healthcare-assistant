@@ -1,0 +1,22 @@
+services:
+
+  - type: web
+
+    name: ai-healthcare-assistant
+
+    env: python
+
+    buildCommand: "./build.sh"
+
+    startCommand: "gunicorn healthcare_ai.wsgi:application"
+
+    envVars:
+
+      - key: DJANGO_SETTINGS_MODULE
+        value: healthcare_ai.settings
+
+      - key: SECRET_KEY
+        generateValue: true
+
+      - key: PYTHON_VERSION
+        value: 3.11.4
