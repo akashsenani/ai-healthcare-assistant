@@ -1,0 +1,158 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>AI Disease Prediction</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+</head>
+
+<body class="dark-body">
+<a href="/" class="home-btn">
+
+    <i class="fa-solid fa-house"></i>
+
+</a>
+<div class="container mt-5">
+
+    <!-- HERO SECTION -->
+
+    <div class="glass-card prediction-hero">
+
+        <h1 class="hero-title">
+
+            🧬 AI Disease Predictor
+
+        </h1>
+
+        <p class="hero-subtitle">
+
+            Describe your symptoms naturally
+            and let AI analyze your health.
+
+        </p>
+
+        <!-- FORM -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <textarea
+                name="symptom_text"
+                class="symptom-input"
+                rows="5"
+                placeholder="Example: fever, headache, cough, body pain..."
+            ></textarea>
+
+            <div class="text-center mt-4">
+
+                <button class="predict-btn">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                    Analyze Symptoms
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- MAIN DISEASE -->
+
+    {% if results %}
+
+    <div class="main-disease-card mt-5">
+
+        <h5 class="mb-3">
+
+            MOST PROBABLE DISEASE
+
+        </h5>
+
+        <h1>
+
+            {{ results.0.disease }}
+
+        </h1>
+
+        <div class="main-probability">
+
+            {{ results.0.probability }}%
+
+        </div>
+
+    </div>
+
+    <!-- OTHER PREDICTIONS -->
+
+    <div class="row mt-5">
+
+        {% for result in results %}
+
+        <div class="col-md-4 mb-4">
+
+            <div class="prediction-card">
+
+                <h3>
+
+                    {{ result.disease }}
+
+                </h3>
+
+                <div class="probability-number">
+
+                    {{ result.probability }}%
+
+                </div>
+
+                <div class="progress modern-progress">
+
+                    <div
+                        class="progress-bar progress-glow"
+                        style="
+                        width:
+                        {{ result.probability }}%;
+                        "
+                    >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+
+</html>

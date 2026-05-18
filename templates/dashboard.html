@@ -1,0 +1,236 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Health Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body class="dark-body">
+
+<!-- HOME BUTTON -->
+
+<a href="/" class="home-btn">
+
+    <i class="fa-solid fa-house"></i>
+
+</a>
+
+<!-- BACKGROUND -->
+
+<div class="bg-blur blur1"></div>
+
+<div class="bg-blur blur2"></div>
+
+<div class="container mt-5">
+
+    <!-- TITLE -->
+
+    <h1 class="dashboard-title">
+
+        📊 Health Analytics Dashboard
+
+    </h1>
+
+    <!-- CARDS -->
+
+    <div class="row">
+
+        <!-- BMI -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="analytics-card text-center">
+
+                <div class="analytics-number">
+
+                    {{ bmi }}
+
+                </div>
+
+                <div class="analytics-label">
+
+                    BMI Score
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- PREDICTIONS -->
+
+        <div class="col-md-6 mb-4">
+
+            <div class="analytics-card text-center">
+
+                <div class="analytics-number">
+
+                    {{ total_predictions }}
+
+                </div>
+
+                <div class="analytics-label">
+
+                    Disease Predictions
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CHART -->
+
+    <div class="analytics-card mt-5">
+
+        <h2 class="mb-4 text-info">
+
+            📈 BMI Progress
+
+        </h2>
+
+        <canvas id="bmiChart"></canvas>
+
+    </div>
+
+</div>
+
+<!-- CHART SCRIPT -->
+
+<script>
+
+const labels = [
+
+    {% for label in chart_labels %}
+
+        "{{ label }}",
+
+    {% endfor %}
+];
+
+const bmiValues = [
+
+    {% for value in chart_values %}
+
+        {{ value }},
+
+    {% endfor %}
+];
+
+console.log(labels);
+
+console.log(bmiValues);
+
+const ctx = document.getElementById(
+    'bmiChart'
+).getContext('2d');
+
+new Chart(ctx, {
+
+    type: 'line',
+
+    data: {
+
+        labels: labels,
+
+        datasets: [{
+
+            label: 'BMI Progress',
+
+            data: bmiValues,
+
+            borderColor: '#00E5FF',
+
+            backgroundColor:
+                'rgba(0,229,255,0.15)',
+
+            borderWidth: 4,
+
+            tension: 0.4,
+
+            fill: true,
+
+            pointBackgroundColor:
+                '#7B2FF7',
+
+            pointRadius: 6
+        }]
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                labels: {
+
+                    color: 'white'
+                }
+            }
+        },
+
+        scales: {
+
+            x: {
+
+                ticks: {
+
+                    color: 'white'
+                },
+
+                grid: {
+
+                    color:
+                    'rgba(255,255,255,0.08)'
+                }
+            },
+
+            y: {
+
+                ticks: {
+
+                    color: 'white'
+                },
+
+                grid: {
+
+                    color:
+                    'rgba(255,255,255,0.08)'
+                }
+            }
+        }
+    }
+});
+
+</script>
+
+</body>
+
+</html>
